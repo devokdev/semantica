@@ -10,24 +10,17 @@ import {
   Network,
   Radar,
   Route,
-  Scale,
   Search,
-  Settings2,
   ShieldCheck,
   type LucideIcon,
 } from 'lucide-react';
 import { ErrorBoundary } from './ErrorBoundary';
 
-const DecisionWorkspace = lazy(() => import('./workspaces/DecisionWorkspace/DecisionWorkspace').then((module) => ({ default: module.DecisionWorkspace })));
-const DiffMergeWorkspace = lazy(() => import('./workspaces/DiffMergeWorkspace/DiffMergeWorkspace').then((module) => ({ default: module.DiffMergeWorkspace })));
 const GraphWorkspace = lazy(() => import('./workspaces/GraphWorkspace/GraphWorkspace').then((module) => ({ default: module.GraphWorkspace })));
 const ImportExportWorkspace = lazy(() => import('./workspaces/ImportExportWorkspace/ImportExportWorkspace').then((module) => ({ default: module.ImportExportWorkspace })));
 const LineageDiagram = lazy(() => import('./workspaces/LineageWorkspace/LineageDiagram').then((module) => ({ default: module.LineageDiagram })));
 const ReasoningWorkspace = lazy(() => import('./workspaces/ReasoningWorkspace').then((module) => ({ default: module.ReasoningWorkspace })));
-const SparqlWorkspace = lazy(() => import('./workspaces/SparqlWorkspace/SparqlWorkspace').then((module) => ({ default: module.SparqlWorkspace })));
 const VocabularyWorkspace = lazy(() => import('./workspaces/VocabularyWorkspace/VocabularyWorkspace').then((module) => ({ default: module.VocabularyWorkspace })));
-const RegistryTab = lazy(() => import('./workspaces/EnrichWorkspace/RegistryTab').then((module) => ({ default: module.RegistryTab })));
-const EntityResolutionTab = lazy(() => import('./workspaces/EnrichWorkspace/EntityResolutionTab').then((module) => ({ default: module.EntityResolutionTab })));
 const KGOverviewTab = lazy(() => import('./workspaces/ManageWorkspace/KGOverviewTab').then((module) => ({ default: module.KGOverviewTab })));
 const OntologySummaryTab = lazy(() => import('./workspaces/ManageWorkspace/OntologySummaryTab').then((module) => ({ default: module.OntologySummaryTab })));
 const OntologyWorkspace = lazy(() => import('./workspaces/OntologyWorkspace').then((module) => ({ default: module.OntologyWorkspace })));
@@ -85,12 +78,9 @@ const PREVIEW_DOTS = Array.from({ length: 42 }, (_, i) => ({
 }));
 
 const navItems: NavItem[] = [
-  { id: 'explore', label: 'Knowledge Explorer', hint: 'Graph and vocabulary browsing', icon: Database },
-  { id: 'analyze', label: 'Analyze', hint: 'Query and inspect the dataset', icon: FileSearch },
-  { id: 'decisions', label: 'Decisions', hint: 'Decision chains and precedent review', icon: Scale },
-  { id: 'enrich', label: 'Enrich', hint: 'Import, export, and merge workflows', icon: GitBranchPlus },
-  { id: 'manage', label: 'Manage', hint: 'Lineage and governance tooling', icon: Settings2 },
-  { id: 'ontology-hub', label: 'Ontology Hub', hint: 'Schema governance, registry, and vocabulary management', icon: GitMerge },
+  { id: 'enrich', label: 'Data Ingestion', hint: 'Import and export datasets', icon: GitBranchPlus },
+  { id: 'explore', label: 'Knowledge Graph', hint: 'Interactive network visualization', icon: Database },
+  { id: 'analyze', label: 'Graph Reasoning', hint: 'Deductive reasoning and queries', icon: FileSearch },
 ];
 
 const shellStyles = `
@@ -1504,18 +1494,12 @@ function formatMetric(value: number | null, fallback: string) {
 
 function WelcomeScreen({
   onOpenNetwork,
-  onOpenVocabulary,
   onOpenReasoning,
   onOpenImport,
-  onOpenDecisions,
-  onOpenManage,
 }: {
   onOpenNetwork: () => void;
-  onOpenVocabulary: () => void;
   onOpenReasoning: () => void;
   onOpenImport: () => void;
-  onOpenDecisions: () => void;
-  onOpenManage: () => void;
 }) {
   const [stats, setStats] = useState<{ nodes: number | null; edges: number | null; status: ConnectionStatus }>({
     nodes: null,
@@ -1560,34 +1544,22 @@ function WelcomeScreen({
 
   const secondaryLaunchers: LandingAction[] = [
     {
-      label: 'Vocabulary',
-      description: 'Schemes and terms',
-      icon: Database,
-      onClick: onOpenVocabulary,
-    },
-    {
-      label: 'Analyze',
-      description: 'Inference and queries',
-      icon: BrainCircuit,
-      onClick: onOpenReasoning,
-    },
-    {
-      label: 'Decisions',
-      description: 'Chains and precedents',
-      icon: Scale,
-      onClick: onOpenDecisions,
-    },
-    {
-      label: 'Enrich',
-      description: 'Import and resolve',
+      label: 'Data Ingestion',
+      description: 'Upload structured CSV / JSON datasets',
       icon: GitBranchPlus,
       onClick: onOpenImport,
     },
     {
-      label: 'Manage',
-      description: 'Lineage and ontology',
-      icon: ShieldCheck,
-      onClick: onOpenManage,
+      label: 'Knowledge Graph',
+      description: 'Force-directed graph visualization',
+      icon: Database,
+      onClick: onOpenNetwork,
+    },
+    {
+      label: 'Graph Reasoning',
+      description: 'Deductive rule inference engine',
+      icon: BrainCircuit,
+      onClick: onOpenReasoning,
     },
   ];
 
@@ -1789,10 +1761,6 @@ export default function App() {
             setActiveWorkspace('explore');
             setExploreView('graph');
           }}
-          onOpenVocabulary={() => {
-            setActiveWorkspace('explore');
-            setExploreView('vocabulary');
-          }}
           onOpenReasoning={() => {
             setActiveWorkspace('analyze');
             setAnalyzeView('reasoning');
@@ -1801,8 +1769,6 @@ export default function App() {
             setActiveWorkspace('enrich');
             setEnrichView('import');
           }}
-          onOpenDecisions={() => setActiveWorkspace('decisions')}
-          onOpenManage={() => setActiveWorkspace('manage')}
         />
       );
     }
@@ -1842,39 +1808,13 @@ export default function App() {
     if (activeWorkspace === 'analyze') {
       return (
         <WorkspaceShell
-          title="Analyze"
-          subtitle="Query the active graph and test inference rules."
-          kicker={analyzeView === 'reasoning' ? 'Reasoning Engine' : 'SPARQL Query'}
-          tabs={
-            <>
-              <button className="workspace-tab" data-active={analyzeView === 'reasoning'} onClick={() => setAnalyzeView('reasoning')}>
-                Reasoning Playground
-              </button>
-              <button className="workspace-tab" data-active={analyzeView === 'sparql'} onClick={() => setAnalyzeView('sparql')}>
-                SPARQL Querying
-              </button>
-            </>
-          }
+          title="Graph Reasoning"
+          subtitle="Deduce new relational connections using forward-chaining logic rules."
+          kicker="Inference Engine"
         >
           <ErrorBoundary key={`analyze-${analyzeView}`}>
             <Suspense fallback={<WorkspaceFallback />}>
-              {analyzeView === 'reasoning' ? <ReasoningWorkspace /> : <SparqlWorkspace />}
-            </Suspense>
-          </ErrorBoundary>
-        </WorkspaceShell>
-      );
-    }
-
-    if (activeWorkspace === 'decisions') {
-      return (
-        <WorkspaceShell
-          title="Decisions"
-          subtitle="Inspect decision chains, causal context, and precedent matches."
-          kicker="Decision Intelligence"
-        >
-          <ErrorBoundary key="decisions">
-            <Suspense fallback={<WorkspaceFallback />}>
-              <DecisionWorkspace />
+              <ReasoningWorkspace />
             </Suspense>
           </ErrorBoundary>
         </WorkspaceShell>
@@ -1884,32 +1824,13 @@ export default function App() {
     if (activeWorkspace === 'enrich') {
       return (
         <WorkspaceShell
-          title="Enrich"
-          subtitle="Import, export, reconcile, and audit graph entities."
-          kicker="Knowledge Audit"
-          tabs={
-            <>
-              <button className="workspace-tab" data-active={enrichView === 'import'} onClick={() => setEnrichView('import')}>
-                Import and Export
-              </button>
-              <button className="workspace-tab" data-active={enrichView === 'merge'} onClick={() => setEnrichView('merge')}>
-                Diff and Merge
-              </button>
-              <button className="workspace-tab" data-active={enrichView === 'resolve'} onClick={() => setEnrichView('resolve')}>
-                Entity Resolution
-              </button>
-              <button className="workspace-tab" data-active={enrichView === 'registry'} onClick={() => setEnrichView('registry')}>
-                Registry
-              </button>
-            </>
-          }
+          title="Data Ingestion"
+          subtitle="Import and export structured graph payloads (.json or .csv)."
+          kicker="Ingestion Core"
         >
           <ErrorBoundary key={`enrich-${enrichView}`}>
             <Suspense fallback={<WorkspaceFallback />}>
-              {enrichView === 'import' ? <ImportExportWorkspace /> :
-               enrichView === 'merge' ? <DiffMergeWorkspace /> :
-               enrichView === 'resolve' ? <EntityResolutionTab /> :
-               <RegistryTab />}
+              <ImportExportWorkspace />
             </Suspense>
           </ErrorBoundary>
         </WorkspaceShell>
