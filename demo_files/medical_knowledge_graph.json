@@ -53,58 +53,59 @@
         "jurisdiction": "Europe",
         "grant_amount": "$12 Million"
       }
-    },
-    {
-      "id": "apex_logistics",
-      "label": "Apex Logistics",
-      "type": "ORGANIZATION",
-      "properties": {
-        "role": "Cold-chain Freight Partner"
-      }
     }
   ],
   "edges": [
     {
-      "source": "dr_sophia_ramirez",
-      "target": "cardiozen",
-      "relation": "DISCOVERED_NEURO_APPLICATION",
-      "type": "RESEARCH"
+      "id": "e1",
+      "source_id": "dr_sophia_ramirez",
+      "target_id": "cardiozen",
+      "type": "DISCOVERED_APPLICATION",
+      "weight": 0.95,
+      "properties": {
+        "year": "2024",
+        "patent": "US-2024-0091"
+      }
     },
     {
-      "source": "dr_sophia_ramirez",
-      "target": "project_neuroshield",
-      "relation": "LEAD_INVESTIGATOR",
-      "type": "GOVERNANCE"
+      "id": "e2",
+      "source_id": "dr_sophia_ramirez",
+      "target_id": "project_neuroshield",
+      "type": "LEAD_INVESTIGATOR",
+      "weight": 1.0,
+      "properties": {
+        "role": "Principal Investigator"
+      }
     },
     {
-      "source": "dr_arthur_pendelton",
-      "target": "project_neuroshield",
-      "relation": "APPROVED_CLINICAL_TRIAL",
-      "type": "AUTHORIZATION"
+      "id": "e3",
+      "source_id": "dr_arthur_pendelton",
+      "target_id": "project_neuroshield",
+      "type": "APPROVED_TRIAL",
+      "weight": 0.9,
+      "properties": {
+        "authorization_level": "Level 4"
+      }
     },
     {
-      "source": "biomatrix_labs",
-      "target": "cardiozen",
-      "relation": "CONDUCTED_DOCKING_SIMULATION",
-      "type": "ANALYSIS"
+      "id": "e4",
+      "source_id": "european_medical_council",
+      "target_id": "project_neuroshield",
+      "type": "FUNDED_GRANT",
+      "weight": 1.0,
+      "properties": {
+        "grant_code": "EMC-2024-G98"
+      }
     },
     {
-      "source": "european_medical_council",
-      "target": "project_neuroshield",
-      "relation": "FUNDED_WITH_GRANT",
-      "type": "FUNDING"
-    },
-    {
-      "source": "apex_logistics",
-      "target": "cardiozen",
-      "relation": "TRANSPORTED_BATCH_902",
-      "type": "SUPPLY_CHAIN"
-    },
-    {
-      "source": "european_medical_council",
-      "target": "apex_logistics",
-      "relation": "AUDITED_COMPLIANCE",
-      "type": "REGULATORY_AUDIT"
+      "id": "e5",
+      "source_id": "biomatrix_labs",
+      "target_id": "cardiozen",
+      "type": "TESTED_COMPOUND",
+      "weight": 0.85,
+      "properties": {
+        "binding_affinity": "0.92 nM"
+      }
     }
   ]
 }

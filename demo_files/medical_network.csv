@@ -1,8 +1,5 @@
 source,target,relation,type
-Dr. Sophia Ramirez,CardioZen,DISCOVERED_APPLICATION,Research
-Dr. Sophia Ramirez,Project NeuroShield,LEAD_INVESTIGATOR,Governance
-Dr. Arthur Pendelton,Project NeuroShield,APPROVED_TRIAL,Authorization
-BioMatrix Labs,CardioZen,TESTED_COMPOUND,Analysis
-European Medical Council,Project NeuroShield,FUNDED_GRANT,Funding
-Apex Logistics,CardioZen,TRANSPORTED_BATCH,SupplyChain
-European Medical Council,Apex Logistics,AUDITED_COMPLIANCE,Audit
+apex_logistics,cardiozen,TRANSPORTED_BATCH,SupplyChain
+european_medical_council,apex_logistics,AUDITED_COMPLIANCE,Audit
+dr_arthur_pendelton,apex_logistics,CONTRACTED_VENDOR,Logistics
+biomatrix_labs,apex_logistics,SECURE_SAMPLE_TRANSFER,Custody
