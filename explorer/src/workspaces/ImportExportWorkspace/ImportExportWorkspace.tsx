@@ -79,8 +79,8 @@ export function ImportExportWorkspace() {
             <UploadCloud size={20} />
           </div>
           <div>
-            <h2 className="ws-title" style={{ fontSize: 18 }}>Import &amp; Export</h2>
-            <div className="ws-body" style={{ marginTop: 2 }}>Ingest new graph datasets or extract the current knowledge base.</div>
+            <h2 className="ws-title" style={{ fontSize: 18 }}>Add Your Data</h2>
+            <div className="ws-body" style={{ marginTop: 2 }}>Upload a spreadsheet (.csv) or data file (.json) to build your visual map.</div>
           </div>
         </div>
 
@@ -89,7 +89,7 @@ export function ImportExportWorkspace() {
           <div className="ws-card" style={{ padding: 24, display: "flex", flexDirection: "column", gap: 18 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <UploadCloud size={16} color="var(--ws-accent)" />
-              <div style={{ color: "var(--ws-text)", fontWeight: 700, fontSize: 14 }}>Import Entities &amp; Relations</div>
+              <div style={{ color: "var(--ws-text)", fontWeight: 700, fontSize: 14 }}>1. Upload New File</div>
             </div>
 
             {/* Dropzone */}
@@ -119,10 +119,12 @@ export function ImportExportWorkspace() {
               ) : (
                 <>
                   <UploadCloud size={36} color="var(--ws-accent)" style={{ opacity: 0.7 }} />
-                  <div style={{ color: "var(--ws-text)", fontWeight: 600 }}>Drag &amp; drop or click to browse</div>
-                  <div className="ws-pill ws-pill--mono">.json</div>
-                  <span style={{ color: "var(--ws-text-dim)", fontSize: 11 }}>or</span>
-                  <div className="ws-pill ws-pill--mono">.csv</div>
+                  <div style={{ color: "var(--ws-text)", fontWeight: 600 }}>Drag &amp; drop file here, or click to browse</div>
+                  <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                    <div className="ws-pill ws-pill--mono">.json file</div>
+                    <span style={{ color: "var(--ws-text-dim)", fontSize: 11 }}>or</span>
+                    <div className="ws-pill ws-pill--mono">.csv spreadsheet</div>
+                  </div>
                 </>
               )}
             </div>
@@ -133,7 +135,7 @@ export function ImportExportWorkspace() {
               disabled={!file || isUploading}
               style={{ width: "100%", justifyContent: "center" }}
             >
-              {isUploading ? <><Loader2 size={15} className="ws-spin" />Uploading…</> : <><UploadCloud size={15} />Upload to Graph</>}
+              {isUploading ? <><Loader2 size={15} className="ws-spin" />Adding to graph…</> : <><UploadCloud size={15} />Add to Graph</>}
             </button>
           </div>
 
@@ -141,11 +143,11 @@ export function ImportExportWorkspace() {
           <div className="ws-card" style={{ padding: 24, display: "flex", flexDirection: "column", gap: 18 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <Download size={16} color="var(--ws-purple)" />
-              <div style={{ color: "var(--ws-text)", fontWeight: 700, fontSize: 14 }}>Export Graph Snapshot</div>
+              <div style={{ color: "var(--ws-text)", fontWeight: 700, fontSize: 14 }}>2. Download Current Graph</div>
             </div>
 
             <div>
-              <label className="ws-label">Format</label>
+              <label className="ws-label">Choose Format</label>
               <div style={{ display: "flex", gap: 8 }}>
                 {(["json", "csv"] as const).map((fmt) => (
                   <button
@@ -162,11 +164,11 @@ export function ImportExportWorkspace() {
             </div>
 
             <div style={{ flex: 1, padding: "14px 16px", borderRadius: "var(--ws-radius-sm)", background: "rgba(0,0,0,0.22)", border: "1px solid var(--ws-border)" }}>
-              <div style={{ color: "var(--ws-text-muted)", fontWeight: 700, fontSize: 12, marginBottom: 6 }}>What's included</div>
+              <div style={{ color: "var(--ws-text-muted)", fontWeight: 700, fontSize: 12, marginBottom: 6 }}>What this does</div>
               <div className="ws-body" style={{ fontSize: 12 }}>
                 {exportFormat === "json"
-                  ? "Full graph snapshot: all node properties, edge weights, entity metadata and semantic groups in a standardized JSON payload."
-                  : "Flattened CSV: nodes and edges as rows. Complex nested properties are stringified. Best for spreadsheet analysis."}
+                  ? "Saves all current circles, connections, and properties into a single JSON file that you can share or backup."
+                  : "Saves your graph as a spreadsheet table with rows of connections that you can open in Excel or Google Sheets."}
               </div>
             </div>
 
@@ -176,7 +178,7 @@ export function ImportExportWorkspace() {
               disabled={isExporting}
               style={{ width: "100%", justifyContent: "center", background: "var(--ws-purple-soft)", borderColor: "rgba(192,132,252,0.3)", color: "#d8b4fe" }}
             >
-              {isExporting ? <><Loader2 size={15} className="ws-spin" />Preparing…</> : <><Download size={15} />Download Export</>}
+              {isExporting ? <><Loader2 size={15} className="ws-spin" />Preparing file…</> : <><Download size={15} />Download File</>}
             </button>
           </div>
         </div>

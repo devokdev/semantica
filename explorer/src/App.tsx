@@ -78,9 +78,9 @@ const PREVIEW_DOTS = Array.from({ length: 42 }, (_, i) => ({
 }));
 
 const navItems: NavItem[] = [
-  { id: 'enrich', label: 'Data Ingestion', hint: 'Import and export datasets', icon: GitBranchPlus },
-  { id: 'explore', label: 'Knowledge Graph', hint: 'Interactive network visualization', icon: Database },
-  { id: 'analyze', label: 'Graph Reasoning', hint: 'Deductive reasoning and queries', icon: FileSearch },
+  { id: 'enrich', label: '1. Upload Data', hint: 'Add files (.json or .csv) to build the graph', icon: GitBranchPlus },
+  { id: 'explore', label: '2. View Graph', hint: 'Explore people, drugs, and connections visually', icon: Database },
+  { id: 'analyze', label: '3. Find Connections', hint: 'Use rules to discover new hidden facts', icon: FileSearch },
 ];
 
 const shellStyles = `
@@ -1808,9 +1808,9 @@ export default function App() {
     if (activeWorkspace === 'analyze') {
       return (
         <WorkspaceShell
-          title="Graph Reasoning"
-          subtitle="Deduce new relational connections using forward-chaining logic rules."
-          kicker="Inference Engine"
+          title="Find New Connections"
+          subtitle="Test logic rules to automatically discover and draw new relationships on your graph."
+          kicker="Step 3 · Deduction"
         >
           <ErrorBoundary key={`analyze-${analyzeView}`}>
             <Suspense fallback={<WorkspaceFallback />}>
@@ -1824,9 +1824,9 @@ export default function App() {
     if (activeWorkspace === 'enrich') {
       return (
         <WorkspaceShell
-          title="Data Ingestion"
-          subtitle="Import and export structured graph payloads (.json or .csv)."
-          kicker="Ingestion Core"
+          title="Upload Data"
+          subtitle="Import your spreadsheet or JSON data to build your visual graph."
+          kicker="Step 1 · Ingestion"
         >
           <ErrorBoundary key={`enrich-${enrichView}`}>
             <Suspense fallback={<WorkspaceFallback />}>

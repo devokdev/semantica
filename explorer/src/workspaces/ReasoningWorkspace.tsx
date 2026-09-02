@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { BrainCircuit, Play, RotateCcw, CheckCircle2, AlertCircle, Zap, GitBranch, Info } from "lucide-react";
+import { BrainCircuit, Play, RotateCcw, CheckCircle2, AlertCircle, Zap, GitBranch, Info, Loader2 } from "lucide-react";
 
 const SAMPLE_FACTS = `inhibits(Metformin, mTOR)
 causes(mTOR, Neurodegeneration)
@@ -92,15 +92,15 @@ export function ReasoningWorkspace() {
               <BrainCircuit size={16} />
             </div>
             <div>
-              <div className="ws-eyebrow" style={{ marginBottom: 2 }}>Forward Chaining</div>
-              <div style={{ color: "var(--ws-text)", fontWeight: 700, fontSize: 15, lineHeight: 1 }}>Inference Engine</div>
+              <div className="ws-eyebrow" style={{ marginBottom: 2 }}>Rule Deduction</div>
+              <div style={{ color: "var(--ws-text)", fontWeight: 700, fontSize: 15, lineHeight: 1 }}>Find Hidden Connections</div>
             </div>
           </div>
         </div>
 
         {/* Templates */}
         <div style={{ padding: "12px 16px 10px", borderBottom: "1px solid var(--ws-border)", flexShrink: 0 }}>
-          <div className="ws-eyebrow" style={{ marginBottom: 8 }}>Quick Templates</div>
+          <div className="ws-eyebrow" style={{ marginBottom: 8 }}>Example Templates</div>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {TEMPLATES.map((t) => (
               <button key={t.label} className="ws-btn ws-btn--ghost" style={{ padding: "5px 10px", fontSize: 11 }} onClick={() => loadTemplate(t)}>
@@ -113,8 +113,8 @@ export function ReasoningWorkspace() {
         {/* Input area */}
         <div className="ws-scroll ws-padded" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <div>
-            <label className="ws-label">Facts</label>
-            <div className="ws-body" style={{ marginBottom: 8 }}>One fact per line using <code style={{ color: "var(--ws-accent)", fontSize: 11 }}>predicate(subject, object)</code> form.</div>
+            <label className="ws-label">Known Facts</label>
+            <div className="ws-body" style={{ marginBottom: 8 }}>Statements you know to be true, one per line: <code style={{ color: "var(--ws-accent)", fontSize: 11 }}>relation(Subject, Object)</code></div>
             <textarea
               className="ws-textarea"
               value={facts}
@@ -125,8 +125,8 @@ export function ReasoningWorkspace() {
           </div>
 
           <div>
-            <label className="ws-label">Rules</label>
-            <div className="ws-body" style={{ marginBottom: 8 }}>Use <code style={{ color: "var(--ws-amber)", fontSize: 11 }}>IF … AND … THEN …</code> syntax. Falls back to internal matcher if the reasoning server is unavailable.</div>
+            <label className="ws-label">Logic Rules</label>
+            <div className="ws-body" style={{ marginBottom: 8 }}>Write an IF-THEN rule: <code style={{ color: "var(--ws-amber)", fontSize: 11 }}>IF fact1 AND fact2 THEN new_fact</code></div>
             <textarea
               className="ws-textarea"
               value={rules}
@@ -149,8 +149,8 @@ export function ReasoningWorkspace() {
               <div style={{ position: "absolute", top: 3, left: applyToGraph ? 19 : 3, width: 14, height: 14, borderRadius: 999, background: "#fff", transition: "left 180ms ease", boxShadow: "0 1px 4px rgba(0,0,0,0.4)" }} />
             </div>
             <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: applyToGraph ? "#6ee7b7" : "var(--ws-text-muted)" }}>Write inferred facts to graph</div>
-              <div style={{ fontSize: 11, color: "var(--ws-text-dim)" }}>Inferred binary facts are added as edges</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: applyToGraph ? "#6ee7b7" : "var(--ws-text-muted)" }}>Draw new lines directly onto the graph</div>
+              <div style={{ fontSize: 11, color: "var(--ws-text-dim)" }}>Automatically adds newly discovered facts as new connection arrows</div>
             </div>
           </label>
 
@@ -163,10 +163,10 @@ export function ReasoningWorkspace() {
               style={{ flex: 1, justifyContent: "center" }}
             >
               {isRunning
-                ? <><span className="ws-spin" style={{ display: "inline-block" }}><Zap size={15} /></span>Running…</>
-                : <><Play size={14} />Run Reasoning</>}
+                ? <><Loader2 size={15} className="ws-spin" />Finding new connections…</>
+                : <><Play size={14} />Run Deduction</>}
             </button>
-            <button className="ws-btn ws-btn--ghost" onClick={handleReset} title="Reset to defaults">
+            <button className="ws-btn ws-btn--ghost" onClick={handleReset} title="Reset">
               <RotateCcw size={14} />
             </button>
           </div>
